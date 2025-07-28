@@ -2,17 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Send SMS</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>SMS Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        textarea, input[type="text"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h2>Bulk SMS Sender</h2>
-    <form method="post" action="/send_sms">
+    <h2>Send SMS to Multiple Numbers</h2>
+    <form method="POST" action="https://developenv.onrender.com/send_sms">
         <label for="numbers">Phone Numbers (comma-separated):</label>
-        <input type="text" id="numbers" name="numbers" placeholder="+1234567890,+1987654321" required>
+        <textarea id="numbers" name="numbers" placeholder="+15555555555,+16666666666" rows="4" required></textarea>
 
         <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="4" placeholder="Type your SMS here..." required></textarea>
+        <textarea id="message" name="message" placeholder="Enter your message here..." rows="5" required></textarea>
 
         <button type="submit">Send SMS</button>
     </form>
