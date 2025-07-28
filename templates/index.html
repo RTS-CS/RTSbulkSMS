@@ -2,22 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SMS Sender</title>
+    <title>Send SMS</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>📲 Twilio SMS Sender</h2>
+    <h2>Bulk SMS Sender</h2>
+    <form method="post" action="/send_sms">
+        <label for="numbers">Phone Numbers (comma-separated):</label>
+        <input type="text" id="numbers" name="numbers" placeholder="+1234567890,+1987654321" required>
 
-    <form method="POST">
-        <label>Add Phone Number:</label><br>
-        <input type="text" name="number" placeholder="+1234567890"><br><br>
-
-        <label>Message:</label><br>
-        <textarea name="message" rows="4" cols="50" placeholder="Your message here..."></textarea><br><br>
-
-        <label>Select Numbers:</label><br>
-        {% for number in phone_numbers %}
-            <input type="checkbox" name="selected" value="{{ number }}"> {{ number }}<br>
-        {% endfor %}<br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" placeholder="Type your SMS here..." required></textarea>
 
         <button type="submit">Send SMS</button>
     </form>
