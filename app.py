@@ -1,39 +1,37 @@
-from flask import Flask, request, render_template, redirect, url_for
-from twilio.rest import Client
 import os
+from flask import Flask, request, render_template
+from twilio.rest import Client
 
 app = Flask(__name__)
 
-# Load phone numbers in memory
-phone_numbers = []
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    if request.method == 'POST':
-        number = request.form.get('number')
-        message = request.form.get('message')
-        selected = request.form.getlist('selected')
+    return render_template('index.html')
 
-        if number:
-            phone_numbers.append(number)
+@app.route('/send_sms', methods=['POST'])
+def send_sms():
+    numbers = request.form.get('numbers', '').split(',')
+    message = request.form.get('message', '').strip()
 
-        if message and selected:
-            # Twilio credentials from environment
-            account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-            auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
-            from_number = os.environ.get('TWILIO_PHONE_NUMBER')
+    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+    from_number = os.getenv("TWILIO_PHONE_NUMBER")
 
-            client = Client(account_sid, auth_token)
+    if not (account_sid and auth_token and from_number):
+        return "⚠️ Missing Twilio credentials"
 
-            for num in selected:
-                client.messages.create(
-                    to=num,
-                    from_=from_number,
-                    body=message
-                )
-        return redirect(url_for('index'))
+    client = Client(account_sid, auth_token)
 
-    return render_template('index.html', phone_numbers=phone_numbers)
+    for num in numbers:
+        num = num.strip()
+        if num:
+            client.messages.create(
+                to=num,
+                from_=from_number,
+                body=message
+            )
+
+    return f"✅ Message sent to: {', '.join(numbers)}"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
