@@ -10,9 +10,9 @@ client = Client(TWILIO_SID, TWILIO_AUTH)
 
 # List of recipient phone numbers
 recipients = [
-    "+1xxxxxxxxxx",
-    "+1xxxxxxxxxx",
-    "+1xxxxxxxxxx"
+    "+17867848466",
+    "+13526829932",
+    "+19107286226"
 ]
 
 # Message to send
